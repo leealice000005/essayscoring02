@@ -10,16 +10,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Set up Node.js
+    - name: Set up Node.js 20
       uses: actions/setup-node@v3
       with:
-        node-version: '20'  # 使用 Node.js 20
+        node-version: '20'
 
     - name: Checkout code
-      uses: actions/checkout@v3  # 确保使用 v3
+      uses: actions/checkout@v3
 
     - name: Set up Python
-      uses: actions/setup-python@v4  # 确保使用 v4
+      uses: actions/setup-python@v4
       with:
         python-version: '3.x'
 
