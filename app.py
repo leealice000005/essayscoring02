@@ -1,41 +1,28 @@
-from flask import Flask, request, render_template, redirect, url_for, Response
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired
-import os
-from dotenv import load_dotenv
+from flask import Flask, request, render_template
+import numpy as np
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LinearRegression
 
-load_dotenv()  # 加载 .env 文件
-
-# 创建一个 Flask 应用实例，并将其命名为 `app`
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '22222'  # 请替换为实际的密钥
 
-class LoginForm(FlaskForm):
-    account = StringField('Account', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Login')
-
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    form = LoginForm()
-    if form.validate_on_submit():
-        input_account = form.account.data
-        input_password = form.password.data
-        if input_account == os.getenv('ACCOUNT') and input_password == os.getenv('PASSWORD'):
-            return redirect(url_for('score'))
-        else:
-            return "Authentication failed!", 401
-    return render_template('index.html', form=form)
-
-@app.route('/score', methods=['GET', 'POST'])
-def score():
-    if request.method == 'POST':
-        essay = request.form['essay']
-        # 在这里添加评分逻辑
-        score = len(essay)  # 示例评分逻辑
-        return render_template('form.html', score=score)
+@app.route('/')
+def home():
     return render_template('form.html')
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+@app.route('/score', methods=['POST'])
+def score():
+    essay = request.form['essay']
+    if not essay:
+        return render_template('form.html', score='No essay provided')
+
+    try:
+        score = calculate_score(essay)
+        return render_template('form.html', score=score)
+    except Exception as e:
+        return render_template('form.html', score=f'Error: {e}')
+
+def calculate_score(essay):
+    tfidf = TfidfVectorizer()
+    lr = LinearRegression()
+
+    X_train = ["example text", "another example", "more text da
