@@ -1,52 +1,28 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, Response
 import os
-import numpy as np
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import LinearRegression
+from dotenv import load_dotenv
+
+load_dotenv()  # 加载 .env 文件
 
 app = Flask(__name__)
 
+def check_auth(username, password):
+    return username == os.environ.get('HTTP_AUTH_USER') and password == os.environ.get('HTTP_AUTH_PASSWORD')
+
+def authenticate():
+    return Response(
+        'Could not verify your access level for that URL.\n'
+        'You have to login with proper credentials', 401,
+        {'WWW-Authenticate': 'Basic realm="Login Required"'})
 
 @app.route('/')
-def home():
-    return render_template('form.html')
-
-
-@app.route('/score', methods=['POST'])
-def score():
-    essay = request.form['essay']
-    print(f"Received essay: {essay}")  # 添加调试信息
-
-    if not essay:
-        return render_template('form.html', score='No essay provided')
-
-    try:
-        score = calculate_score(essay)
-        return render_template('form.html', score=score)
-    except Exception as e:
-        return render_template('form.html', score=f'Error: {e}')
-
-
-def calculate_score(essay):
-    # 这里是一个简化的评分逻辑示例
-    # 实际应用中，你需要用更多的训练数据和更复杂的模型
-    tfidf = TfidfVectorizer()
-    lr = LinearRegression()
-
-    # 模拟训练数据
-    X_train = ["example text", "another example", "more text data for training"]
-    y_train = [1, 2, 3]  # 训练数据对应的分数，注意这里需要是非零值，避免训练时除零错误
-
-    # 训练模型
-    tfidf.fit(X_train)
-    X_train_transformed = tfidf.transform(X_train)
-    lr.fit(X_train_transformed, y_train)
-
-    # 对输入文章进行评分
-    X = tfidf.transform([essay])
-    score = lr.predict(X)
-    return round(score[0], 2)
-
+def index():
+    auth = request.authorization
+    if not auth or not check_auth(auth.username, auth.password):
+        return authenticate()
+    return "Hello, authenticated world!"
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    print("Starting Flask app")
+    app.run(host='0.0.0.0', port=5000)
+    print("Flask app is running")
