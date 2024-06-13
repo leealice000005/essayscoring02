@@ -24,21 +24,16 @@ def score():
         return render_template('form.html', score=f'Error: {e}')
 
 def calculate_score(essay):
-    # 这里是一个简化的评分逻辑示例
-    # 实际应用中，你需要用更多的训练数据和更复杂的模型
     tfidf = TfidfVectorizer()
     lr = LinearRegression()
 
-    # 模拟训练数据
     X_train = ["example text", "another example", "more text data for training"]
-    y_train = [1, 2, 3]  # 训练数据对应的分数，注意这里需要是非零值，避免训练时除零错误
+    y_train = [1, 2, 3]
 
-    # 训练模型
     tfidf.fit(X_train)
     X_train_transformed = tfidf.transform(X_train)
     lr.fit(X_train_transformed, y_train)
 
-    # 对输入文章进行评分
     X = tfidf.transform([essay])
     score = lr.predict(X)
     return round(score[0], 2)
