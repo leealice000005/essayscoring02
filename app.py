@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()  # 加载 .env 文件
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your_secret_key'  # 请替换为实际的密钥
+app.config['SECRET_KEY'] = '22222'  # 这里使用你的实际密钥
 
 class LoginForm(FlaskForm):
     account = StringField('Account', validators=[DataRequired()])
@@ -37,6 +37,4 @@ def score():
     return render_template('form.html')
 
 if __name__ == '__main__':
-    print("Starting Flask app")
     app.run(host='0.0.0.0', port=5000)
-    print("Flask app is running")
