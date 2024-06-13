@@ -10,8 +10,10 @@
         <textarea name="essay" rows="10" cols="50" placeholder="Enter your essay here..."></textarea><br>
         <input type="submit" value="Score">
     </form>
-    {% if score %}
+    {% if score is not none %}
         <h2>Score: {{ score }}</h2>
     {% endif %}
 </body>
 </html>
+
+

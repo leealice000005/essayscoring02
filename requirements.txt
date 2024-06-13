@@ -5,6 +5,9 @@ tensorflow==2.15.0
 Werkzeug==2.0.3
 scikit-learn  # 去掉版本限制
 python-dotenv
+Flask-WTF
+
+
 
 
 

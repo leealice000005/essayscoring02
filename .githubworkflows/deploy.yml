@@ -23,11 +23,17 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Output environment variables (for debugging purposes)
+      run: |
+        echo "ACCOUNT: ${{ secrets.ACCOUNT }}"
+        echo "PASSWORD: ${{ secrets.PASSWORD }}"
+
     - name: Notify Render
       run: |
         curl -X POST "https://api.render.com/deploy/srv-xxxxxx" \
         -H 'Accept: application/json' \
-        -H 'Authorization: Bearer ${{ secrets.RENDER_API_KEY }}'
+        -H 'Authorization: Bearer ${{ secrets.RENDER_API_KEY }}' \
+        -d '{"account": "${{ secrets.ACCOUNT }}", "password": "${{ secrets.PASSWORD }}"}'
       env:
         ACCOUNT: ${{ secrets.ACCOUNT }}
         PASSWORD: ${{ secrets.PASSWORD }}
