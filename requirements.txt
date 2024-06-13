@@ -3,7 +3,8 @@ gunicorn==20.1.0
 numpy==1.23.5
 tensorflow==2.15.0
 Werkzeug==2.0.3
-scikit-learn==1.2.2  # 添加 scikit-learn 依赖
+scikit-learn  # 去掉版本限制
+
 
 
 
