@@ -7,22 +7,14 @@ from dotenv import load_dotenv
 
 load_dotenv()  # 加载 .env 文件
 
+# 创建一个 Flask 应用实例，并将其命名为 `app`
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '22222'  # 这里使用你的实际密钥
+app.config['SECRET_KEY'] = 'your_secret_key'  # 请替换为实际的密钥
 
 class LoginForm(FlaskForm):
     account = StringField('Account', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
-
-def check_auth(username, password):
-    return username == os.environ.get('HTTP_AUTH_USER') and password == os.environ.get('HTTP_AUTH_PASSWORD')
-
-def authenticate():
-    return Response(
-        'Could not verify your access level for that URL.\n'
-        'You have to login with proper credentials', 401,
-        {'WWW-Authenticate': 'Basic realm="Login Required"'})
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -35,13 +27,6 @@ def index():
         else:
             return "Authentication failed!", 401
     return render_template('index.html', form=form)
-
-@app.route('/basic-auth')
-def basic_auth():
-    auth = request.authorization
-    if not auth or not check_auth(auth.username, auth.password):
-        return authenticate()
-    return "Hello, authenticated world!"
 
 @app.route('/score', methods=['GET', 'POST'])
 def score():
