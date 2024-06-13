@@ -3,14 +3,14 @@ name: Deploy to Render
 on:
   push:
     branches:
-      - main  # 或者其他你想监听的分支
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Set up Node.js 20
+    - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '20'
