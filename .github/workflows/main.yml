@@ -35,5 +35,6 @@ jobs:
         -H 'Authorization: Bearer ${{ secrets.RENDER_API_KEY }}' \
         -d '{"account": "${{ secrets.ACCOUNT }}", "password": "${{ secrets.PASSWORD }}"}'
       env:
+        RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
         ACCOUNT: ${{ secrets.ACCOUNT }}
         PASSWORD: ${{ secrets.PASSWORD }}
