@@ -9,7 +9,7 @@ load_dotenv()  # 加载 .env 文件
 
 # 创建一个 Flask 应用实例，并将其命名为 `app`
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your_secret_key'  # 请替换为实际的密钥
+app.config['SECRET_KEY'] = '22222'  # 请替换为实际的密钥
 
 class LoginForm(FlaskForm):
     account = StringField('Account', validators=[DataRequired()])
