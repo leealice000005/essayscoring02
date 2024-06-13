@@ -1,6 +1,7 @@
-Flask==2.0.1
+Flask==2.2.2  # 更新到与最新 Werkzeug 版本兼容的 Flask 版本
 gunicorn==20.1.0
 numpy==1.23.5
 tensorflow==2.15.0
-Werkzeug==2.0.3  # 使用 2.x 版本，与 Flask 2.0.1 兼容
+Werkzeug==2.2.3  # 或最新的 2.x 版本
+
 
