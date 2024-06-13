@@ -15,7 +15,7 @@ def score():
     print(f"Received essay: {essay}")
 
     if not essay:
-        return render_template('form.html', score='No essay provided')
+        return render_template('form.html', score=None)
 
     try:
         score = calculate_score(essay)
@@ -30,8 +30,8 @@ def calculate_score(essay):
     X_train = ["example text", "another example", "more text data for training"]
     y_train = [1, 2, 3]
 
-    tfidf.fit(X_train)
-    X_train_transformed = tfidf.transform(X_train)
+    tfidf.fit(XTrain)
+    X_train_transformed = tfidf.transform(XTrain)
     lr.fit(X_train_transformed, y_train)
 
     X = tfidf.transform([essay])
