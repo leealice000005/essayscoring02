@@ -6,40 +6,23 @@ on:
       - main
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '20'
-
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v2
       with:
-        python-version: '3.x'
+        python-version: '3.9' # 确保使用你需要的Python版本
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Output environment variables (for debugging purposes)
+    - name: Deploy to Render
       run: |
-        echo "ACCOUNT: ${{ secrets.ACCOUNT }}"
-        echo "PASSWORD: ${{ secrets.PASSWORD }}"
-
-    - name: Notify Render
-      run: |
-        curl -X POST "https://api.render.com/deploy/srv-xxxxxx" \
-        -H 'Accept: application/json' \
-        -H 'Authorization: Bearer ${{ secrets.RENDER_API_KEY }}' \
-        -d '{"account": "${{ secrets.ACCOUNT }}", "password": "${{ secrets.PASSWORD }}"}'
-      env:
-        RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
-        ACCOUNT: ${{ secrets.ACCOUNT }}
-        PASSWORD: ${{ secrets.PASSWORD }}
+        render deploy --service-id <srv-cpld8sf109ks73dqjntg> --branch main --wait-for-service
